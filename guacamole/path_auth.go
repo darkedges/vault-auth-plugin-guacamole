@@ -1,4 +1,4 @@
-package example
+package guacamole
 
 import (
 	"context"
