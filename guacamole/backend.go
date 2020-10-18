@@ -5,12 +5,14 @@ import (
 
 	"github.com/hashicorp/vault/sdk/framework"
 	"github.com/hashicorp/vault/sdk/logical"
+	"github.com/pkg/errors"
 )
 
+// Factory creates a new usable instance of this auth method.
 func Factory(ctx context.Context, c *logical.BackendConfig) (logical.Backend, error) {
 	b := Backend(c)
 	if err := b.Setup(ctx, c); err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "failed to create factory")
 	}
 	return b, nil
 }
@@ -19,6 +21,8 @@ type backend struct {
 	*framework.Backend
 }
 
+// Backend creates a new backend, mapping the proper paths, help information,
+// and required callbacks.
 func Backend(c *logical.BackendConfig) *backend {
 	var b backend
 
