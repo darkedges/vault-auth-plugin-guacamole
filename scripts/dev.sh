@@ -6,7 +6,7 @@ SCRATCH="$(pwd)/tmp"
 mkdir -p "${SCRATCH}/plugins"
 
 # Build plugin
-go build -o "${SCRATCH}/plugins/vault-auth-example"
+go build -o "${SCRATCH}/plugins/vault-auth-guacamole"
 
 # Run vault
 vault server \
@@ -32,18 +32,20 @@ trap cleanup EXIT
 vault login root
 
 vault plugin list
-vault auth enable -path=example -plugin-name=vault-auth-example plugin
+vault auth enable -path=guacamole -plugin-name=vault-auth-guacamole plugin
+
+# Display info
+vault read auth/guacamole/info
 
 # Configure
-# vault write auth/example/config \
-#   username="guacadmin" \
-#   password="guacadmin" \
-#   url="http://localhost:1234"
+vault write auth/guacamole/config \
+  access_token="guacadmin" \
+  teams="guacadmin"
 
 # Display config
-# vault read auth/example/config
+vault read auth/guacamole/config
 
-vault write auth/example/login password=super-secret-password
+vault write auth/guacamole/login password=super-secret-password
 
 # Wait
 wait $!
