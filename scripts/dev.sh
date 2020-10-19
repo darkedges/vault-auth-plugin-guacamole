@@ -35,6 +35,7 @@ vault plugin list
 vault auth enable -path=guacamole -plugin-name=vault-auth-guacamole plugin
 
 # Display info
+vault path-help auth/guacamole/
 vault read auth/guacamole/info
 
 # Configure
